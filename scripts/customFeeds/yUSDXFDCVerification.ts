@@ -36,12 +36,12 @@ const headers = "{}";
 const queryParams = "{}";
 const body = "{}";
 
-// JQ filter to extract navScaled from the API response
+// JQ filter to extract navScaled from the API response as an object
 // Response format: { "success": true, "data": { "navScaled": 1004187, ... } }
-const postProcessJq = `.data.navScaled`;
+const postProcessJq = `{navScaled: .data.navScaled}`;
 
-// ABI signature for the response - single uint256 for navScaled
-const abiSignature = `{"internalType": "uint256", "name": "navScaled", "type": "uint256"}`;
+// ABI signature for the response - tuple containing uint256 navScaled
+const abiSignature = `{"components": [{"internalType": "uint256", "name": "navScaled", "type": "uint256"}], "internalType": "struct NavData", "name": "data", "type": "tuple"}`;
 
 /**
  * Prepares the FDC attestation request for the X-Pool NAV API

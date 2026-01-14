@@ -1,6 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-verify";
 import "@nomiclabs/hardhat-web3";
+import "@typechain/hardhat";
 require("@nomiclabs/hardhat-truffle5");
 require("dotenv").config();
 

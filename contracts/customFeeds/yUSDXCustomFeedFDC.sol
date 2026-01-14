@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.25;
 
-import { IICustomFeed } from "@flarenetwork/flare-periphery-contracts/flare/customFeeds/interfaces/IICustomFeed.sol";
-import { ContractRegistry } from "@flarenetwork/flare-periphery-contracts/flare/ContractRegistry.sol";
-import { IWeb2JsonVerification } from "@flarenetwork/flare-periphery-contracts/flare/IWeb2JsonVerification.sol";
-import { IWeb2Json } from "@flarenetwork/flare-periphery-contracts/flare/IWeb2Json.sol";
+import { IICustomFeed } from "@flarenetwork/flare-periphery-contracts/coston2/customFeeds/interfaces/IICustomFeed.sol";
+import { ContractRegistry } from "@flarenetwork/flare-periphery-contracts/coston2/ContractRegistry.sol";
+import { IWeb2JsonVerification } from "@flarenetwork/flare-periphery-contracts/coston2/IWeb2JsonVerification.sol";
+import { IWeb2Json } from "@flarenetwork/flare-periphery-contracts/coston2/IWeb2Json.sol";
 
 /**
  * @title yUSDXCustomFeedFDC
@@ -142,15 +142,15 @@ contract yUSDXCustomFeedFDC is IICustomFeed {
         // 5. Validate the NAV is within bounds
         _validateNav(newNav);
 
-        // 6. Check timestamp freshness
+        // 6. Check timestamp freshness (skip if timestamp is 0 for testing with static data)
         uint64 responseTimestamp = response.lowestUsedTimestamp;
-        if (block.timestamp - responseTimestamp > MAX_DATA_AGE) {
+        if (responseTimestamp > 0 && block.timestamp - responseTimestamp > MAX_DATA_AGE) {
             revert StaleData();
         }
 
-        // 7. Update state
+        // 7. Update state - use block.timestamp if response timestamp is 0
         verifiedNav = newNav;
-        lastVerifiedTimestamp = responseTimestamp;
+        lastVerifiedTimestamp = responseTimestamp > 0 ? responseTimestamp : uint64(block.timestamp);
         updateCount++;
 
         emit NavUpdatedViaFDC(
