@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>yUSDX NAV API (Static Demo)</title>
+    <style>
+        body { font-family: monospace; max-width: 800px; margin: 50px auto; padding: 20px; }
+        pre { background: #f4f4f4; padding: 15px; overflow-x: auto; }
+        a { color: #0066cc; }
+    </style>
+</head>
+<body>
+    <h1>yUSDX NAV API (Static Demo)</h1>
+    <p>This is a static mock API for FDC (Flare Data Connector) demo purposes.</p>
+
+    <h2>Endpoint</h2>
+    <p><a href="./api/v1/xpool/nav.json">GET /api/v1/xpool/nav.json</a></p>
+
+    <h2>FDC Integration</h2>
+    <pre>
+{
+  "attestationType": "Web2Json",
+  "sourceId": "PublicWeb2",
+  "url": "https://amadiaflare.github.io/hex-custom-feeds/api/v1/xpool/nav.json",
+  "httpMethod": "GET",
+  "postProcessJq": ".data.navScaled",
+  "abiEncodedResponseTypes": ["uint256"]
+}
+    </pre>
+
+    <h2>Response Format</h2>
+    <pre id="response">Loading...</pre>
+
+    <script>
+        fetch('./api/v1/xpool/nav.json')
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+            });
+    </script>
+</body>
+</html>
